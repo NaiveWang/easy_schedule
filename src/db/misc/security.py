@@ -3,8 +3,6 @@ import base64
 import uuid
 import random
 
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import rsa
 
 def hash(s):
     return hashlib.md5(s.encode()).hexdigest()

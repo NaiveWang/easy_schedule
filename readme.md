@@ -1,8 +1,12 @@
-# Easy Schedule
+# Easy Schedule User Manual
 
-a multi-user schedule website.
+[![GitHub license](https://img.shields.io/badge/license-GPL3.0-blue.svg)](https://github.com/NaiveWang/DirtRallyTelemetry/blob/master/LICENSE)
+
+a multi-user scheduling website.
 
 This project is implemented with `SQLite` and `Python Flask`. This readme is also a help page of the website itself. Base64 encoding is used for obfuscating database to provide better user privacy.
+
+To deploy the peroject, clone this repository and follow instructions [here](https://github.com/NaiveWang/easy_schedule/blob/master/deploy.md).
 
 ## User Base
 
