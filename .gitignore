@@ -2,7 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+# SQLite DB file
+*.db3
 # C extensions
 *.so
 

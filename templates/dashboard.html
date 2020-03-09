@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h1>Credit</h1>
+<a href="/new_credit">New</a>
+<h3>Avaliable</h3>
+{% for id, name, price in credit_avaliable %}
+  <li>
+      {{name}} {{price}}
+      <a href="/spend_credit?id={{id}}">Spend</a>
+  </li>
+{% endfor %}
+<h3>inprogress</h3>
+{% for name, price, hold in credit_inprogress %}
+  <li>
+      {{name}} <progress value="{{hold}}" max="{{price}}"></progress> {{price}}
+  </li>
+{% endfor %}
+<h3>Pending</h3>
+{% for name, price in credit_pending %}
+  <li>
+      {{name}} {{price}}
+  </li>
+{% endfor %}
+<h3>Finished</h3>
+{% for name, price, timestamp in credit_finished %}
+  <li>
+      {{name}} {{price}} {{timestamp}}
+  </li>
+{% endfor %}
+{% endblock %}

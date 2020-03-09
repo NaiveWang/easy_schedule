@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}PoW Dump{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h1>Create Credit</h1>
+<form action="new_credit" method="POST">
+  Name<br><input type="input" name="name" required="required"><br>
+  Price<br><input type="number" step="0.01" name="price" required="required"><br>
+  After<br><select id="after", name="after">
+    <option value="-1" selected>None</option>
+    {% for id, name in before %}
+    <option value="{{id}}">{{name}}</option>
+    {% endfor %}
+  </select><br>
+  <input type="submit" value = "Add">
+</form>
+{% endblock %}

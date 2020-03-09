@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}PoW Dump{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h3>Todo Management</h3>
+{% for id, name, trash in todo %}
+  <li>
+    {{name}}
+    {% if 0 != trash %}
+    <a href="/trash_todo?r=1&id={{id}}">Recover</a>
+    <a href="/del_todo?id={{id}}">Delete</a>
+    {% else %}
+    <a href="/trash_todo?r=0&id={{id}}">Mark as Trash</a>
+    {% endif %}
+  </li>
+{% endfor %}
+<h3>Credit Management</h3>
+{% for id, name, trash in credito %}
+  <li>
+    {{name}}
+    {% if 0 != trash %}
+    <a href="/trash_credit?r=1&id={{id}}">Recover</a>
+    <a href="/del_credit?id={{id}}">Delete</a>
+    {% else %}
+    <a href="/trash_credit?r=0&id={{id}}">Mark as Trash</a>
+    {% endif %}
+  </li>
+{% endfor %}
+<h3>Friend Management</h3>
+{% for id, name in bond %}
+  <li>
+    {{name}}
+    <a href="/del_bond?id={{id}}">Delete</a>
+
+  </li>
+{% endfor %}
+<h3>Proof-of-Work Management</h3>
+{% for id, proof, timestamp, trash in pow %}
+  <li>
+    {{proof}} {{timestamp}}
+    {% if 0 != trash %}
+    <a href="/trash_pow?r=1&id={{id}}">Recover</a>
+    <a href="/del_pow?id={{id}}">Delete</a>
+    {% else %}
+    <a href="/trash_pow?r=0&id={{id}}">Mark as Trash</a>
+    {% endif %}
+  </li>
+{% endfor %}
+{% endblock %}

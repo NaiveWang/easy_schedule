@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/auth.css" type="text/css">
+    <title>User Activate {{version}}</title>
+    <meta content="">
+    <style>
+    </style>
+  </head>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      var messages = {{ messages | safe }};
+      for (var i=0; i<messages.length; i++) {
+        alert(messages[i]);
+      }
+    </script>
+  {% endif %}
+  {% endwith %}
+  <body>
+    <form action="/activate" method="POST">
+    <input type="username" name="name" placeholder="New Username" required>
+    <input type="password" name="passwd" placeholder="New Password" required>
+    <input type="input" name="actcode" placeholder="Activation Code" required>
+    <input type="submit" value="Activate">
+    </form>
+    Or get <a href="/help">Help</a>
+  </body>
+</html>

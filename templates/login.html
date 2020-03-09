@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/auth.css" type="text/css">
+    <title>User login {{version}}</title>
+    <meta content="">
+    <style>
+    </style>
+  </head>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      var messages = {{ messages | safe }};
+      for (var i=0; i<messages.length; i++) {
+        alert(messages[i]);
+      }
+    </script>
+  {% endif %}
+  {% endwith %}
+  <body>
+    You need to login first, or <a href="/activate">activate</a> your account.
+    <form action="/login" method="POST">
+    <input type="username" name="name" placeholder="Username" required>
+    <input type="password" name="passwd" placeholder="Password" required>
+    <input type="submit" value="Log in">
+    </form>
+    Or get <a href="/help">Help</a>
+  </body>
+</html>

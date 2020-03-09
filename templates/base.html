@@ -1,0 +1,31 @@
+<!doctype html>
+<title>Easy Schedule {{version}}| {% block title %}{% endblock %}</title>
+<nav>
+  <h3>{{user}}: "{{motto}}", Credit: {{credit}}</h3>
+  <a href="/">Credit</a>
+  <a href="/todo_book">Book</a>
+  <a href="/me">Me</a>
+  <a href="/hub">Hub</a>
+  <a href="/manage">Manage</a>
+  <a href="/logout">Log Out</a>
+  <a href="/help">HELP</a>
+
+
+</nav>
+<section class="content">
+  <header>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <script>
+        var messages = {{ messages | safe }};
+        for (var i=0; i<messages.length; i++) {
+          alert(messages[i]);
+        }
+      </script>
+    {% endif %}
+    {% endwith %}
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+</section>

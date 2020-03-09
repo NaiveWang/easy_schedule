@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+<h2>Change wassup</h2>
+<form action="/me_wassup" method="POST">
+  <input type="input" name="motto" placeholder="Say something!" required>
+  <input type="submit" value="Update">
+</form>
+<h2>Change Passcode</h2>
+<form action="/me_passcode" method="POST">
+  <input type="password" name="passwd" placeholder="Stale Password" required>
+  <input type="password" name="passwdn" placeholder="New Password" required>
+  <input type="submit" value="Change">
+</form>
+<h2>Set Visibility</h2>
+<form action="/me_visible" method="POST">
+  <select id="v", name="v">
+    <option value="0" selected>Private</option>
+    <option value="1" >Public</option>
+  </select>
+  <input type="submit" value="Set">
+</form>
+<h2>Friend Code</h2>
+<form action="/me_add_friend" method="POST">
+  <input type="input" name="token" placeholder="Friend Code" required>
+  <input type="submit" value="Add Friend">
+</form>
+<br>
+<form action="/me_gen_tok" method="POST">
+  <input type="submit" value="Generate">
+</form>
+{% if None != token[0] %}
+Your Code: <strong>{{token[0]}}</strong>
+{% endif %}
+{% endblock %}
