@@ -4,6 +4,10 @@ __pycache__/
 *$py.class
 # SQLite DB file
 *.db3
+# https key
+local.crt
+local.csr
+local.key
 # C extensions
 *.so
 
