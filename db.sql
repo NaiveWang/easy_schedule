@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS "todo_t" (
 );
 INSERT INTO todo_t VALUES(1,'book','todo for textbook');
 INSERT INTO todo_t VALUES(2,'keep','keep something in a timeline');
+INSERT INTO todo_t VALUES(3,'sport','for sport use');
 CREATE TABLE IF NOT EXISTS "todo_book" (
 	"id"	INTEGER,
 	"start"	INTEGER NOT NULL,
@@ -14,7 +15,6 @@ CREATE TABLE IF NOT EXISTS "todo_book" (
 	"val"	INTEGER NOT NULL,
 	PRIMARY KEY("id")
 );
-
 CREATE TABLE IF NOT EXISTS "todo_keep" (
 	"id"	INTEGER,
 	"span"	INTEGER NOT NULL,
@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS "pow" (
 	"trash"	INTEGER DEFAULT 0,
 	FOREIGN KEY("todoid") REFERENCES "todo"("id")
 );
-
 CREATE TABLE IF NOT EXISTS "user" (
 	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 	"name"	TEXT UNIQUE,
@@ -56,7 +55,6 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"visible"	INTEGER DEFAULT 0,
 	"share"	TEXT
 );
-
 CREATE TABLE IF NOT EXISTS "todo" (
 	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 	"uid"	INTEGER NOT NULL,
@@ -75,10 +73,19 @@ CREATE TABLE IF NOT EXISTS "user_bond" (
 	"iid"	INTEGER NOT NULL,
 	"pipe"	INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS "todo_sport" (
+	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"val"	REAL DEFAULT 0,
+	"goal" REAL
+);
+
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('todo_t',0);
 INSERT INTO sqlite_sequence VALUES('credit',0);
 INSERT INTO sqlite_sequence VALUES('pow',0);
 INSERT INTO sqlite_sequence VALUES('user',0);
 INSERT INTO sqlite_sequence VALUES('todo',0);
+INSERT INTO sqlite_sequence VALUES('todo_sport',0);
+INSERT INTO sqlite_sequence VALUES('user_bond',0);
 COMMIT;

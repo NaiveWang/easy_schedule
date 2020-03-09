@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h1>Sports</h1>
+<a href="/new_todo?tid=3">New</a>
+<h3>Opened</h3>
+{% for id, name, val, goal in opened %}
+  <li>
+      {{name}}<progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
+      <a href="/proof_todo_sport?id={{id}}&val={{val}}">Proof</a>
+  </li>
+{% endfor %}
+<h3>Instructed</h3>
+{% for id, name, val, goal in instructed %}
+  <li>
+      {{name}}<progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
+  </li>
+{% endfor %}
+<h3>Pending</h3>
+{% for id, name, val, goal in pending %}
+  <li>
+      {{name}} : {{goal}}
+  </li>
+{% endfor %}
+{% endblock %}

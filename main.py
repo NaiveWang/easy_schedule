@@ -7,6 +7,7 @@ from src.user import user
 from src.credit import credit
 
 from src.todo_book import todo_book
+from src.todo_sport import todo_sport
 
 import os
 
@@ -17,6 +18,8 @@ app.register_blueprint(user)
 app.register_blueprint(credit)
 
 app.register_blueprint(todo_book)
+app.register_blueprint(todo_sport)
+
 app.secret_key = os.urandom(12)
 Misaka(app)
 
