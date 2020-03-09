@@ -70,5 +70,5 @@ def new_friend(db, token, uid):
         db.commit()
 def get_friend(db, uid):
     c = db.cursor()
-    c.execute('select user_bond.iid, name from user join user_bond where user.id = uid and user.id = ?', (uid,))
+    c.execute('select user_bond.iid, name from user join user_bond where user.id = iid and uid = ?', (uid,))
     return [[id, decode(name)] for id, name in c.fetchall()]

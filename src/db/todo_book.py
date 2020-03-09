@@ -40,7 +40,7 @@ def proof(db, val, uid, todoid, note, visible):
     c.execute('select name from user where id = ?', (uid,))
     name = decode(c.fetchone()[0])
     c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))',
-        (uid, todoid, encode(note), encode(name+': '+decode(row[3])+' from %d to %d with %lf credit'%(row[0], val, row[2] * (val - row[0]))), visible))
+        (uid, todoid, encode(note), encode('Book Proof by '+name+': '+decode(row[3])+' from %d to %d with %lf credit'%(row[0], val, row[2] * (val - row[0]))), visible))
     db.commit()
 
 def get_by_uid_todo(db, uid):
