@@ -14,7 +14,7 @@ As we use `SQLite` as database, there is no need to configure a large stand-alon
 
 `Python3` and it's `Pip` is needed, and you may want to use dediceted `virtualenv`. Install these pipes with `pip`:
 
-> $ pip install Flask Flask-Misaka Jinja2 uwsgi apscheduler
+> $ pip install Flask Flask-Misaka Jinja2 uwsgi
 
 ### SQLite
 

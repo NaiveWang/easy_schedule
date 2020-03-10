@@ -11,10 +11,8 @@ todo_keep = Blueprint('todo_keep', __name__)
 
 def keep_daily_refresh():
     # update at 00:00
-    if int(time.strftime('%H%M')) == 0:
-        todo.daily_refresh(dbd.connect())
-    else:
-        print(time.strftime('%H%M'))
+    todo.daily_refresh(dbd.connect())
+
 
 @todo_keep.route('/todo_keep', methods = ['GET'])
 def todo_keep_get():

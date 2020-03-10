@@ -10,9 +10,11 @@ from src.todo_book import todo_book
 from src.todo_keep import todo_keep, keep_daily_refresh
 from src.todo_sport import todo_sport
 
-from apscheduler.schedulers.background import BackgroundScheduler
+
 
 import os
+
+
 
 app = Flask(__name__)
 app.register_blueprint(misc)
@@ -27,10 +29,8 @@ app.register_blueprint(todo_sport)
 app.secret_key = os.urandom(12)
 Misaka(app)
 
-scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(keep_daily_refresh, 'interval', seconds=59)
-scheduler.start()
+
 
 if __name__ == "__main__":
-
+    import scheduler
     app.run(host='0.0.0.0', port=5000, debug=True)
