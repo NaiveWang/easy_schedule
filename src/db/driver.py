@@ -16,15 +16,21 @@ def connect():
 def close(db):
     db.close()
 
-def dump_pow(db):
+def get_pow_user_fence(db, uid, pid):
     c = db.cursor()
-    c.execute('select proof, note, timestamp from pow')
-    return [[decode(proof), decode(note), timestamp] for proof, note, timestamp in c.fetchall()]
+    # check
+    c.execute('select proof, note, timestamp from pow where (uid = ? or is_public = 1) and id = ?', (uid, pid))
+    row = c.fetchone()
+    if None == row:
+
+        return False
+    proof, note, timestamp = row
+    return decode(proof), decode(note), timestamp
 
 def dump_pow_user_fence(db, uid):
     c = db.cursor()
-    c.execute('select proof, note, timestamp from pow where uid = ? or is_public = 1', (uid,))
-    return [[decode(proof), decode(note), timestamp] for proof, note, timestamp in c.fetchall()]
+    c.execute('select id, proof, timestamp from pow where uid = ? or is_public = 1', (uid,))
+    return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
 def dump_user(db):
     c = db.cursor()
     c.execute('select name, motto from user where name is not null')

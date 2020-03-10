@@ -4,12 +4,12 @@
 {% endblock %}
 {% block content %}
 <h1>Proof-of-Work Dump</h1>
-{% for proof, note, timestamp in powdump %}
+{% for id, proof, timestamp in powdump %}
   <li>
-      {{proof}} {{note}} {{timestamp}}
+      <a href="/peek_proof?id={{id}}">{{proof}} {{timestamp}}</a>
   </li>
 {% endfor %}
-<h1>Meet Users</h1>
+<h1>Meet Public Users</h1>
 {% for name, motto in userdump %}
   <li>
       {{name}} says "{{motto}}"
