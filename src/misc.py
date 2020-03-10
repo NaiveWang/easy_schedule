@@ -13,11 +13,14 @@ misc = Blueprint('misc', __name__)
 
 @misc.route('/help', methods = ['GET'])
 def help_get():
+    if session.get('login'):
+        db = dbd.connect()
+        uinfo = dbd.get_uinfo(db, session.get('uid'))
+    else:
+        uinfo = ["#Anonymous", "我没有敌人。", "NaN"]
     readme = open('readme.md').read()
     return render_template('help.html',
-                            user = session.get('user'),
-                            motto = session.get('motto'),
-                            credit = session.get('credit'),
+                            uinfo = uinfo,
                             version = version,
                             readme = readme)
 
@@ -26,9 +29,7 @@ def hub_get():
     if session.get('login'):
         db = dbd.connect()
         return render_template('pow.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 powdump = dbd.dump_pow_user_fence(db, session.get('uid')),
                                 userdump = dbd.dump_user_visible(db))
@@ -44,9 +45,7 @@ def new_todo_get():
         db = dbd.connect()
         sur = dbd.get_type(db)[int(request.args['tid'])]
         return render_template('/new_todo_'+sur+'.html',
-                                user = str(session.get('user')),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 todo = dbd.get_nfinished_by_uid(db, session.get('uid')),
                                 version = version,
                                 uid = session.get('uid'),

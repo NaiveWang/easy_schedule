@@ -7,7 +7,10 @@ from src.user import user
 from src.credit import credit
 
 from src.todo_book import todo_book
+from src.todo_keep import todo_keep, keep_daily_refresh
 from src.todo_sport import todo_sport
+
+from apscheduler.schedulers.background import BackgroundScheduler
 
 import os
 
@@ -18,11 +21,15 @@ app.register_blueprint(user)
 app.register_blueprint(credit)
 
 app.register_blueprint(todo_book)
+app.register_blueprint(todo_keep)
 app.register_blueprint(todo_sport)
 
 app.secret_key = os.urandom(12)
 Misaka(app)
 
+scheduler = BackgroundScheduler(daemon=True)
+scheduler.add_job(keep_daily_refresh, 'interval', seconds=59)
+scheduler.start()
 
 if __name__ == "__main__":
 

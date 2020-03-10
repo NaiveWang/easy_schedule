@@ -21,11 +21,9 @@ def login_post():
     if motto != None:
         # success, get session
         session['login'] = True
-        session['user'] = name
         session['uid'] = uid
         session['auth'] = passwd
-        session['motto'] = motto
-        session['credit'] = credit
+        session['user'] = name
         resp = redirect('/')
 
         return resp
@@ -59,9 +57,7 @@ def me_get():
         db = dbd.connect()
 
         return render_template('me.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 token = dbu.get_friend_code(db, session.get('uid')))
     else:
@@ -83,7 +79,6 @@ def me_wassup_post():
         db = dbd.connect()
         dbu.update_motto(db, session.get('uid'), request.form['motto'])
         #update cookie
-        session['motto'] = request.form['motto']
         return redirect('/me')
     else:
         flash(sess_rej)

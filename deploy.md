@@ -1,6 +1,6 @@
 # Easy Schedule Deployment Manual
 
-Through this manual you can deploy this project. Usually it should be deployed on a GNU/Linux PC or Dev Board. If you do not know what project you are going to deploy, read [User Manual](https://github.com/NaiveWang/easy_schedule/blob/master/manual.md) first.
+Through this manual you can deploy this project. Usually it should be deployed on a GNU/Linux PC or Dev Board. If you do not know what project you are going to deploy, read [User Manual](https://github.com/NaiveWang/easy_schedule/blob/master/readme.md) first.
 
 Firstly, clone this repo:
 
@@ -14,7 +14,7 @@ As we use `SQLite` as database, there is no need to configure a large stand-alon
 
 `Python3` and it's `Pip` is needed, and you may want to use dediceted `virtualenv`. Install these pipes with `pip`:
 
-> $ pip install Flask Flask-Misaka Jinja2 uwsgi
+> $ pip install Flask Flask-Misaka Jinja2 uwsgi apscheduler
 
 ### SQLite
 

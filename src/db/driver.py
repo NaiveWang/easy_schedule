@@ -6,6 +6,11 @@ from src.db.misc.security import encode, decode
 
 db = 'db.db3'
 
+def get_uinfo(db, uid):
+    c = db.cursor()
+    c.execute('select name, motto, hold from user where id = ?', (uid,))
+    name, motto, hold = c.fetchone()
+    return decode(name), decode(motto), hold
 def connect():
     return sqlite3.connect(db)
 def close(db):

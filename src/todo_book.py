@@ -12,9 +12,7 @@ def todo_book_get():
     if session.get('login'):
         db = dbd.connect()
         return render_template('todo_book.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 todo_books = todo.get_by_uid_todo(db, session.get('uid')),
                                 finished_books = todo.get_by_uid_finished(db, session.get('uid')),
@@ -30,9 +28,7 @@ def proof_todo_book_get():
         db = dbd.connect()
         # check user violation
         return render_template('/proof_todo_book.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 id = request.args['id'],
                                 val = int(request.args['val']),
