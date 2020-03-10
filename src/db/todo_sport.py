@@ -39,7 +39,7 @@ def proof(db, val, uid, todoid, note, visible):
     c.execute('select name from user where id = ?', (uid,))
     name = decode(c.fetchone()[0])
     c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))',
-        (uid, todoid, encode(note), encode('Sport Proof by: '+name+': '+decode(row[3])+' from %lf to %lf with %lf credit'%(row[0], row[0] + val, row[2] * val)), visible))
+        (uid, todoid, encode(note), encode('Sport Proof by '+name+': '+decode(row[3])+' from %lf to %lf with %lf credit'%(row[0], row[0] + val, row[2] * val)), visible))
     db.commit()
 def get_by_uid_opened(db, uid):
     c = db.cursor()
@@ -47,7 +47,7 @@ def get_by_uid_opened(db, uid):
     return [[id, decode(name), val, goal] for id, name, val, goal in c.fetchall()]
 def get_by_uid_pending(db, uid):
     c = db.cursor()
-    c.execute('select todo.id, name, val, goal from todo join todo_sport where dependency <> -1 and todo.id = todo_sport.id and tid = ? and iid = ?', (tid, uid))
+    c.execute('select todo.id, name, val, goal from todo join todo_sport where dependency <> -1 and todo.id = todo_sport.id and tid = ? and uid = ?', (tid, uid))
     return [[id, decode(name), val, goal] for id, name, val, goal in c.fetchall()]
 def get_by_uid_instructed(db, uid):
     c = db.cursor()

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h1>Keep</h1>
+<a href="/new_todo?tid=2">New</a>
+<h3>In Progress</h3>
+{% for id, name, span, val_span, repeat, val_repeat, open, close in inprogress %}
+  <li>
+      {{name}} Avaliable from {{'%02d'%(open // 100)}}:{{'%02d'%(open % 100)}} to {{'%02d'%(close // 100)}}:{{'%02d'%(close % 100)}}.
+      <br>Day(s) keeped: <progress value="{{val_span}}" max="{{span}}"></progress>{{val_span}}/{{span}}<br>
+      <br>Daily keeped: <progress value="{{val_repeat}}" max="{{repeat}}"></progress>{{val_repeat}}/{{repeat}}<br>
+      <a href="/proof_todo_keep?id={{id}}">Proof</a>
+  </li>
+{% endfor %}
+<h3>Instructed</h3>
+{% for id, name, span, val_span, repeat, val_repeat in instructed %}
+  <li>
+      {{name}}
+      <br>Day(s) keeped: <progress value="{{val_span}}" max="{{span}}"></progress>{{val_span}}/{{span}}<br>
+      <br>Daily keeped: <progress value="{{val_repeat}}" max="{{repeat}}"></progress>{{val_repeat}}/{{repeat}}<br>
+  </li>
+{% endfor %}
+<h3>Finished (Daily)</h3>
+{% for id, name, span, val_span, repeat, val_repeat in finished_daily %}
+  <li>
+      {{name}}
+      <br>Day(s) keeped: <progress value="{{val_span}}" max="{{span}}"></progress>{{val_span}}/{{span}}<br>
+  </li>
+{% endfor %}
+<h3>Pending</h3>
+{% for id, name, span, val_span, repeat, val_repeat in pending %}
+  <li>
+      {{name}} {{span}}
+  </li>
+{% endfor %}
+<h3>Finished</h3>
+{% for id, name, span, val_span, repeat, val_repeat in finished %}
+  <li>
+      {{name}} {{span}}
+  </li>
+{% endfor %}
+{% endblock %}

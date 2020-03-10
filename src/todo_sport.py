@@ -12,9 +12,7 @@ def todo_sport_get():
     if session.get('login'):
         db = dbd.connect()
         return render_template('todo_sport.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 opened = todo.get_by_uid_opened(db, session.get('uid')),
                                 instructed = todo.get_by_uid_instructed(db, session.get('uid')),
@@ -29,9 +27,7 @@ def proof_todo_sport_get():
         db = dbd.connect()
         # check user violation
         return render_template('/proof_todo_sport.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 id = request.args['id'],
                                 val = float(request.args['val']))

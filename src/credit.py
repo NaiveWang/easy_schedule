@@ -12,9 +12,7 @@ def root_get():
         db = dbd.connect()
         credits = session.get('credit')
         return render_template('dashboard.html',
-                            user = session.get('user'),
-                            motto = session.get('motto'),
-                            credits = credits,
+                            uinfo = dbd.get_uinfo(db, session.get('uid')),
                             version = version,
                             credit_avaliable = dbd.credit_get_avaliable(db, session.get('uid'), credits),
                             credit_pending = dbd.credit_get_pending(db, session.get('uid')),
@@ -31,9 +29,7 @@ def new_credit_get():
     if session.get('login'):
         db = dbd.connect()
         return render_template('/new_credit.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 before  = dbd.get_user_avali_credit(db, session.get('uid')))
     else:

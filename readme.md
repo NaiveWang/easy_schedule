@@ -87,3 +87,21 @@ To create a todo of type book, click [new](/new_todo?tid=1) under the `book sect
 #### proof
 
 When you have gone through some pages, you can click "`proof`" right of your book `ToDo` stash to proof what you have just read. Ending page is set to 1 page incremental by default, and it can be set higher. You need to fill proof row about what you have learned or anything you can recall. Take it seriously since a short pause can boost your later progress. You have choose the option of posting to public or it will not shows at other users' `Hub` page.
+
+### [Sport type](/todo_sport)
+
+A sport can be proofed even it exceeds the `goal`, extra credits can be earned with same `rate`.
+
+Just keep going.
+
+#### new
+
+Fill name, the `unit`(km, laps, etc.) and the `goal` (how long I have to ride) of your todo of sports.
+
+#### proof
+
+Just open the page, it is instruction-free, nothing fresh here.
+
+### [Keep](/todo_keep)
+
+`Keep` is a **daily** todo, user need to `keep` it for `span`ning days continuously or got reset for being a slacker. User could set avaliable time bound for days, this is useful when one wants to get up, say, at 7:00, then one would set the `close time` (Upper Bound) to `07:00`, which means after 07:00 one does not have the permission to proof since `close time` has passed; so as for the `open time`. User could also set how many times to proof for the day, this could be used for something like *"I'm planning to masterbate 3 times a day for one leap year.*"(Seriously???). `Keep` could be set as loop, after user have finished one `span`, current keep was reset as another new `keep`. User can only get `credit` after one have finished the whole `keep`.

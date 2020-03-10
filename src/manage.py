@@ -9,9 +9,7 @@ def manage_get():
     if session.get('login'):
         db = dbd.connect()
         return render_template('manage.html',
-                                user = session.get('user'),
-                                motto = session.get('motto'),
-                                credit = session.get('credit'),
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
                                 todo = dbd.dump_todo_user(db, session.get('uid')),
                                 credito = dbd.dump_credit_user(db, session.get('uid')),
