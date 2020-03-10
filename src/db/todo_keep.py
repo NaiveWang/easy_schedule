@@ -96,7 +96,7 @@ def get_by_uid_finished_daily(db, uid):
 def daily_refresh(db):
     c = db.cursor()
     # reset slacker
-    c.execute('update todo_keep set val_span = 0 where and span <> val_span and repeat <> val_repeat')
+    c.execute('update todo_keep set val_span = 0 where span <> val_span and repeat <> val_repeat')
     # reset for today
     c.execute('update todo_keep set val_repeat = 0')
     db.commit()
