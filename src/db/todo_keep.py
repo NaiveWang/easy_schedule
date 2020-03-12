@@ -62,12 +62,12 @@ def proof(db, uid, todoid, note, visible):
     if val_span + 1 == span and val_repeat + 1 == repeat:
         # daily finished
         c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))', (
-                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with %lf credits.'%(val_span+1, span, val_repeat+1, repeat, rate)), visible
+                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with %lf credit(s).'%(val_span+1, span, val_repeat+1, repeat, rate)), visible
                 ))
     else:
         # half way done
         c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))', (
-                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with no credits.'%(val_span+1, span, val_repeat+1, repeat)), visible
+                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with no credit.'%(val_span+1, span, val_repeat+1, repeat)), visible
                 ))
     db.commit()
     return True
@@ -96,7 +96,16 @@ def get_by_uid_finished_daily(db, uid):
 def daily_refresh(db):
     c = db.cursor()
     # reset slacker
-    c.execute('update todo_keep set val_span = 0 where and span <> val_span and repeat <> val_repeat')
+    c.execute('update todo_keep set val_span = 0 where span <> val_span and repeat <> val_repeat')
     # reset for today
     c.execute('update todo_keep set val_repeat = 0')
     db.commit()
+
+def get_info(db, todoid):
+    c = db.cursor()
+    c.execute('select todo.name, rate, user.name, iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop from todo join todo_keep join user where user.id = todo.iid and todo.id = todo_keep.id and todo.id = ?', (todoid,))
+    try:
+        name, rate, iname, iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop = c.fetchone()
+    except TypeError:
+        return None
+    return decode(name), rate, decode(iname), iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop

@@ -59,3 +59,11 @@ def get_by_uid_instructed(db, uid):
     c = db.cursor()
     c.execute('select todo.id, name, start, val, end from todo join todo_book where dependency = -1 and val < end and todo.id = todo_book.id and tid = ? and uid <> iid and uid = ?', (tid, uid))
     return [[id, decode(name), start, val, end] for id, name, start, val, end in c.fetchall()]
+def get_info(db, todoid):
+    c = db.cursor()
+    c.execute('select todo.name, rate, user.name, iid, dependency, is_finished, start, end, val from todo join todo_book join user where user.id = todo.iid and todo.id = todo_book.id and todo.id = ?', (todoid,))
+    try:
+        name, rate, iname, iid, dependency, is_finished, start, end, val = c.fetchone()
+    except TypeError:
+        return None
+    return decode(name), rate, decode(iname), iid, dependency, is_finished, start, end, val

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}New sport ToDo{% endblock %}
+{% block title %}New Keep Todo{% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
@@ -8,8 +8,8 @@
   Name<br><input type="text" id="name" name="name" required="required" size="50"><br>
   Open Time: <input type="time" id="open" name="open" required="required">
   Close Time: <input type="time" id="close" name="close" required="required"><br>
-  Span (How many days I have to keep)<br><input type="number" id="span" name="span" required="required"><br>
-  Daily Repeat<br><input type="number" id="repeat" name="repeat" value="1" required="required"><br>
+  Span (How many days I have to keep)<br><input type="number" min="1" id="span" name="span" required="required"><br>
+  Daily Repeat<br><input type="number" id="repeat" name="repeat" min="1" value="1" required="required"><br>
   How much credit will I get After having finished a Span<br><input type="number" step="0.001" id="rate" name="rate" value = "0.001" required="required"><br>
   Is Loop<br>
   <select id="is_loop", name="is_loop">

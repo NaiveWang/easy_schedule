@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Peek Todo {{info[0]}}{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+
+
+<h1>Todo of Book {{info[0]}}</h1>
+
+<h3>Credit per page : {{info[1]}}</h3>
+
+<h3>Instructor : <a href="/peek_user?id={{info[3]}}">{{info[2]}}</a></h3>
+
+{% if info[4] != -1 %}
+<h3>Has Dependency: <a href="/peek_todo_{{dep[1]}}?id={{info[4]}}">{{dep[0]}}</a></h3>
+{% else %}
+<h3>No Dependency</h3>
+{% endif %}
+
+{% if info[5] == 0 %}
+<h3>Not finished yet.</h3>
+<progress value="{{info[8] - info[6]}}" max="{{info[7] - info[6]}}"></progress> At {{info[8]}} from page {{info[6]}} to page {{info[7]}}.
+{% else %}
+<h3>Finished.</h3>
+From page {{info[6]}} to page {{info[7]}}.
+{% endif %}
+
+<h1>PoW</h1>
+{% for id, proof, timestamp in powdump %}
+  <li>
+      <a href="/peek_proof?id={{id}}">{{proof}} {{timestamp}}</a>
+  </li>
+{% endfor %}
+{% endblock %}

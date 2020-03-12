@@ -76,3 +76,29 @@ def proof_todo_keep_post():
             return redirect('/todo_keep')
     flash('Encountering user fence violation, force log out')
     return redirect('/logout')
+@todo_keep.route('/peek_todo_keep', methods = ['GET'])
+def peek_todo_keep_get():
+    if session.get('login'):
+        db = dbd.connect()
+        # check user permission by todo (base info)
+        if dbd.check_upermission_todo(db, session.get('uid'), request.args['id']):
+            # get special data
+            info = todo.get_info(db, request.args['id'])
+            if None ==  info:
+                # type error
+                flash('Todo Type Violation.')
+                return redirect('/todo_keep')
+            else:
+                dep = None if info[4] == -1 else dbd.get_todo_with_type(db, info[4])
+                return render_template('peek_todo_keep.html',
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
+                                version = version,
+                                powdump = dbd.dump_pow_todo_fence(db, request.args['id']),
+                                info = info,
+                                dep = dep)
+        else:
+            flash('Permission Denied / No Book Todo Found')
+            return redirect('/todo_keep')
+    else:
+        flash(sess_rej)
+        return redirect('/login')

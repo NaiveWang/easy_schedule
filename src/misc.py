@@ -24,20 +24,6 @@ def help_get():
                             version = version,
                             readme = readme)
 
-@misc.route('/hub', methods = ['GET'])
-def hub_get():
-    if session.get('login'):
-        db = dbd.connect()
-        return render_template('pow.html',
-                                uinfo = dbd.get_uinfo(db, session.get('uid')),
-                                version = version,
-                                powdump = dbd.dump_pow_user_fence(db, session.get('uid')),
-                                userdump = dbd.dump_user_visible(db))
-    else:
-        flash(sess_rej)
-        return redirect('/login')
-
-
 
 @misc.route('/new_todo', methods = ['GET'])
 def new_todo_get():

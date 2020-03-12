@@ -10,14 +10,14 @@ credit = Blueprint('credit', __name__)
 def root_get():
     if session.get('login'):
         db = dbd.connect()
-        credits = session.get('credit')
-        return render_template('dashboard.html',
-                            uinfo = dbd.get_uinfo(db, session.get('uid')),
+        uinfo = dbd.get_uinfo(db, session.get('uid'))
+        return render_template('credit.html',
+                            uinfo = uinfo,
                             version = version,
-                            credit_avaliable = dbd.credit_get_avaliable(db, session.get('uid'), credits),
+                            credit_avaliable = dbd.credit_get_avaliable(db, session.get('uid'), uinfo[2]),
                             credit_pending = dbd.credit_get_pending(db, session.get('uid')),
                             credit_finished = dbd.credit_get_finished(db, session.get('uid')),
-                            credit_inprogress = dbd.credit_get_inprogress(db, session.get('uid'), credits))
+                            credit_inprogress = dbd.credit_get_inprogress(db, session.get('uid'), uinfo[2]))
 
     else:
         flash(sess_rej)

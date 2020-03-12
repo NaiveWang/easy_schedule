@@ -7,10 +7,10 @@
   ID<br><input type="number" value="{{id}}" name="id" required="required" readonly><br>
   from Page<br><input type="number" value="{{val}}" name="raw_val" required="required" readonly><br>
   to Page<br><input type="number" value="{{val + 1}}" min="{{val + 1}}" max="{{end}}" name="val" required="required"><br>
-  Proof<br><input type="text" id="proof" name="proof" required="required" size="50"><br>
-  Post to Public ?<br><select id="v", name="v">
-    <option value="0" selected>Nyet/No/老子就不</option>
-    <option value="1" >Da/Yes/吼啊</option>
+  Proof<br><input type="text" id="proof" name="proof" required="required" size="100"><br>
+  Totally Private?<br><select id="v", name="v">
+    <option value="0">Da/Yes/吼啊</option>
+    <option value="1" selected>Nyet/No/老子就不</option>
   </select><br>
   <input type="submit" value = "Proof">
 </form>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Sport{% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
@@ -8,20 +8,20 @@
 <h3>Opened</h3>
 {% for id, name, val, goal in opened %}
   <li>
-      {{name}}<progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
+      <a href="/peek_todo_sport?id={{id}}">{{name}}</a><progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
       <a href="/proof_todo_sport?id={{id}}&val={{val}}">Proof</a>
   </li>
 {% endfor %}
 <h3>Instructed</h3>
 {% for id, name, val, goal in instructed %}
   <li>
-      {{name}}<progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
+      <a href="/peek_todo_sport?id={{id}}">{{name}}</a><progress value="{{val}}" max="{{goal}}"></progress>{{val}}/{{goal}}
   </li>
 {% endfor %}
 <h3>Pending</h3>
 {% for id, name, val, goal in pending %}
   <li>
-      {{name}} : {{goal}}
+      <a href="/peek_todo_sport?id={{id}}">{{name}}</a> : {{goal}}
   </li>
 {% endfor %}
 {% endblock %}

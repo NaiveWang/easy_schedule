@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Book{% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
@@ -8,7 +8,7 @@
 <h3>ToDo</h3>
 {% for id, name, start, val, end in todo_books %}
   <li>
-      {{name}}
+      <a href="/peek_todo_book?id={{id}}">{{name}}</a>
       <progress value="{{val - start}}" max="{{end - start}}"></progress>{{val}}/{{end}}
       <a href="/proof_todo_book?id={{id}}&val={{val}}&end={{end}}">Proof</a>
   </li>
@@ -16,19 +16,22 @@
 <h3>Instructed</h3>
 {% for id, name, start, val, end in instructed_books %}
   <li>
-      {{name}}<progress value="{{val - start}}" max="{{end - start}}"></progress>{{val}}/{{end}}
+      <a href="/peek_todo_book?id={{id}}">{{name}}</a>
+      <progress value="{{val - start}}" max="{{end - start}}"></progress>{{val}}/{{end}}
   </li>
 {% endfor %}
 <h3>Pending</h3>
 {% for id, name, start, val, end in pending_books %}
   <li>
-      {{name}} {{val}}/{{end}}
+      <a href="/peek_todo_book?id={{id}}">{{name}}</a>
+       {{val}}/{{end}}
   </li>
 {% endfor %}
 <h3>Finished</h3>
 {% for id, name, start, val, end in finished_books %}
   <li>
-      {{name}} {{val}}/{{end}}
+      <a href="/peek_todo_book?id={{id}}">{{name}}</a>
+       {{val}}/{{end}}
   </li>
 {% endfor %}
 {% endblock %}
