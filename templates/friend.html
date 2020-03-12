@@ -4,5 +4,9 @@
 {% endblock %}
 {% block content %}
 <h1>Friend</h1>
-
+{% for id, name in friend %}
+<li>
+  <a href="/peek_user?id={{id}}">{{name}}</a>
+</li>
+{% endfor %}
 {% endblock %}

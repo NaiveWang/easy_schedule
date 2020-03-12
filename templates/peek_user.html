@@ -8,13 +8,13 @@
 <h1>{{u[0]}}'s Todos</h1>
 {% for id, tname, name in todotump_progress %}
   <li>
-      <a href="/peek_todo_{{tname}}?id={{id}}">{{tname}}:{{name}}</a>
+      <a href="/peek_todo_{{tname}}?id={{id}}">{{tname}}: {{name}}</a>
   </li>
 {% endfor %}
 <h2>Finished</h2>
 {% for id, tname, name in todotump_finished %}
   <li>
-      <a href="/peek_todo_{{tname}}?id={{id}}">{{tname}}:{{name}}</a>
+      <a href="/peek_todo_{{tname}}?id={{id}}">{{tname}}: {{name}}</a>
   </li>
 {% endfor %}
 {% endblock %}
