@@ -27,15 +27,17 @@ def peek_proof_get():
     if session.get('login'):
         db = dbd.connect()
         # check user premission
-        # get the content
-        proof = dbd.get_pow_user_fence(db, session.get('uid'), request.args['id'])
-        if not proof:
+
+        if dbd.check_upermission_pow(db, session.get('uid'), request.args['id']):
+            # get the content
+            return render_template('peek_proof.html',
+                                    uinfo = dbd.get_uinfo(db, session.get('uid')),
+                                    version = version,
+                                    proof = dbd.get_pow(db, request.args['id']))
+        else:
             flash('Permission Denied / No Proof Found')
             return redirect('/hub')
-        return render_template('peek_proof.html',
-                                uinfo = dbd.get_uinfo(db, session.get('uid')),
-                                version = version,
-                                proof = proof)
+
     else:
         flash(sess_rej)
         return redirect('/login')
@@ -44,18 +46,20 @@ def peek_user_get():
     if session.get('login'):
         db = dbd.connect()
         # check user premission
+        if dbd.check_upermission_user(db, session.get('uid'), request.args['id']):
 
-        u = dbd.get_user_visible(db, request.args['id'])
-        if not u:
-            flash('Permission Denied / No Proof Found')
-        # get the content
-        return render_template('peek_user.html',
-                                uinfo = dbd.get_uinfo(db, request.args['id']),
+            # get the content
+            return render_template('peek_user.html',
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
                                 version = version,
-                                u = u,
+                                u = dbd.get_user(db, request.args['id']),
                                 powdump = dbd.dump_pow_user_fence(db, request.args['id']),
                                 todotump_finished = dbd.dump_todo_user_finished(db, request.args['id']),
                                 todotump_progress = dbd.dump_todo_user_progress(db, request.args['id']))
+        else:
+            flash('Permission Denied / No User Found')
+            return redirect('/hub')
+
     else:
         flash(sess_rej)
         return redirect('/login')

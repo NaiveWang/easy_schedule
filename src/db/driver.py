@@ -5,6 +5,10 @@ from src.db.misc.security import encode, decode
 # connect database
 
 db = 'db.db3'
+def connect():
+    return sqlite3.connect(db)
+def close(db):
+    db.close()
 
 # in friend group\self\visible
 def check_upermission_user(db, uid, userid):
@@ -12,9 +16,9 @@ def check_upermission_user(db, uid, userid):
 
     c.execute('select count(*) from user_bond where uid = ? and iid = ?', (uid, userid))
     is_friend = c.fetchone()[0]
-    c.execute('select count(*) from user where is_visible <> 0 and id = ?', (userid,))
+    c.execute('select count(*) from user where visible <> 0 and id = ?', (userid,))
     is_visible = c.fetchone()[0]
-    if 0 == is_friend or uid == userid or 0 == is_visible:
+    if 0 == is_friend and uid != userid and 0 == is_visible:
         return False
     else:
         return True
@@ -22,11 +26,12 @@ def check_upermission_todo(db, uid, todoid):
     c = db.cursor()
     c.execute('select count(*) from user_bond join todo where user_bond.uid = ? and user_bond.iid = todo.uid and todo.id = ?', (uid, todoid))
     is_friend = c.fetchone()[0]
-    c.execute('select count(*) from todo where uid = ? and id = ?', (uid, todoid))
+    # instructor is granted by default
+    c.execute('select count(*) from todo where (uid = ? and id = ?) or (iid = ? and id = ?)', (uid, todoid, uid, todoid))
     is_myself = c.fetchone()[0]
-    c.execute('select count(*) from user join todo where is_visible <> 0 and todo.uid = user.id and todo.id = ?', (userid))
+    c.execute('select count(*) from user join todo where visible <> 0 and todo.uid = user.id and todo.id = ?', (todoid,))
     is_visible = c.fetchone()[0]
-    if 0 == is_friend or 0 == is_myself or is_visible:
+    if 0 == is_friend and 0 == is_myself and 0 == is_visible:
         return False
     else:
         return True
@@ -36,32 +41,39 @@ def check_upermission_pow(db, uid, powid):
     is_friend = c.fetchone()[0]
     c.execute('select count(*) from pow where uid = ? and id = ?', (uid, powid))
     is_myself = c.fetchone()[0]
-    c.execute('select count(*) from user join pow where is_visible <> 0 and pow.uid = user.id and pow.id = ?', (powid))
+    c.execute('select count(*) from user join pow where visible <> 0 and pow.uid = user.id and pow.id = ?', (powid,))
     is_visible = c.fetchone()[0]
-    if 0 == is_friend or 0 == is_myself or is_visible:
+    if 0 == is_friend and 0 == is_myself and 0 == is_visible:
         return False
     else:
         return True
+
 def get_uinfo(db, uid):
     c = db.cursor()
     c.execute('select name, motto, hold from user where id = ?', (uid,))
     name, motto, hold = c.fetchone()
     return decode(name), decode(motto), hold
-def connect():
-    return sqlite3.connect(db)
-def close(db):
-    db.close()
 
-def get_pow_user_fence(db, uid, pid):
+
+
+def get_pow(db, pid):
     c = db.cursor()
     # check
-    c.execute('select proof, note, timestamp from pow where (uid = ? or is_public = 1) and id = ?', (uid, pid))
+    c.execute('select proof, note, timestamp from pow where id = ?', (pid,))
     row = c.fetchone()
     if None == row:
 
         return False
     proof, note, timestamp = row
     return decode(proof), decode(note), timestamp
+
+def get_todo_with_type(db, todoid):
+    c = db.cursor()
+    c.execute('select todo.name, todo_t.name from todo join todo_t where todo_t.id = todo.tid and todo.id = ?', (todoid,))
+
+    name, tname = c.fetchone()
+    return decode(name), tname
+
 def dump_todo_user_progress(db, uid):
     c = db.cursor()
     c.execute('select todo.id, todo_t.name, todo.name from todo join todo_t where todo.tid = todo_t.id and is_finished = 0 and uid = ?', (uid,))
@@ -91,9 +103,9 @@ def dump_user_visible(db):
     c = db.cursor()
     c.execute('select name, motto from user where name is not null and visible = 1')
     return [[decode(name), decode(motto)] for name, motto in c.fetchall()]
-def get_user_visible(db, uid):
+def get_user(db, uid):
     c = db.cursor()
-    c.execute('select name, motto from user where id = ? and visible = 1', (uid,))
+    c.execute('select name, motto from user where id = ?', (uid,))
     u = c.fetchone()
     if None ==  u:
         return False

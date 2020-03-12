@@ -100,3 +100,12 @@ def daily_refresh(db):
     # reset for today
     c.execute('update todo_keep set val_repeat = 0')
     db.commit()
+
+def get_info(db, todoid):
+    c = db.cursor()
+    c.execute('select todo.name, rate, user.name, iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop from todo join todo_keep join user where user.id = todo.iid and todo.id = todo_keep.id and todo.id = ?', (todoid,))
+    try:
+        name, rate, iname, iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop = c.fetchone()
+    except TypeError:
+        return None
+    return decode(name), rate, decode(iname), iid, dependency, is_finished, open, close, span, repeat, val_span, val_repeat, is_loop
