@@ -64,3 +64,15 @@ def new_todo_sport_post():
     else:
         flash(sess_rej)
         return redirect('/login')
+@todo_sport.route('/peek_todo_sport', methods = ['GET'])
+def peek_todo_sport_get():
+    if session.get('login'):
+        db = dbd.connect()
+        # check user permission by todo (base info)
+        return render_template('peek_todo_sport.html',
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
+                                version = version,
+                                powdump = dbd.dump_pow_todo_fence(db, request.args['id']))
+    else:
+        flash(sess_rej)
+        return redirect('/login')

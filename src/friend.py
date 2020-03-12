@@ -14,13 +14,3 @@ def friend_get():
     else:
         flash(sess_rej)
         return redirect('/login')
-@friend.route('/peek_friend', methods = ['GET'])
-def peek_friend_get():
-    if session.get('login'):
-        db = dbd.connect()
-        return render_template('peek_friend.html',
-                                uinfo = dbd.get_uinfo(db, session.get('uid')),
-                                version = version)
-    else:
-        flash(sess_rej)
-        return redirect('/login')

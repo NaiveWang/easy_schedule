@@ -6,6 +6,42 @@ from src.db.misc.security import encode, decode
 
 db = 'db.db3'
 
+# in friend group\self\visible
+def check_upermission_user(db, uid, userid):
+    c = db.cursor()
+
+    c.execute('select count(*) from user_bond where uid = ? and iid = ?', (uid, userid))
+    is_friend = c.fetchone()[0]
+    c.execute('select count(*) from user where is_visible <> 0 and id = ?', (userid,))
+    is_visible = c.fetchone()[0]
+    if 0 == is_friend or uid == userid or 0 == is_visible:
+        return False
+    else:
+        return True
+def check_upermission_todo(db, uid, todoid):
+    c = db.cursor()
+    c.execute('select count(*) from user_bond join todo where user_bond.uid = ? and user_bond.iid = todo.uid and todo.id = ?', (uid, todoid))
+    is_friend = c.fetchone()[0]
+    c.execute('select count(*) from todo where uid = ? and id = ?', (uid, todoid))
+    is_myself = c.fetchone()[0]
+    c.execute('select count(*) from user join todo where is_visible <> 0 and todo.uid = user.id and todo.id = ?', (userid))
+    is_visible = c.fetchone()[0]
+    if 0 == is_friend or 0 == is_myself or is_visible:
+        return False
+    else:
+        return True
+def check_upermission_pow(db, uid, powid):
+    c = db.cursor()
+    c.execute('select count(*) from user_bond join pow where user_bond.uid = ? and user_bond.iid = pow.uid and pow.id = ? and is_public <> 0', (uid, powid))
+    is_friend = c.fetchone()[0]
+    c.execute('select count(*) from pow where uid = ? and id = ?', (uid, powid))
+    is_myself = c.fetchone()[0]
+    c.execute('select count(*) from user join pow where is_visible <> 0 and pow.uid = user.id and pow.id = ?', (powid))
+    is_visible = c.fetchone()[0]
+    if 0 == is_friend or 0 == is_myself or is_visible:
+        return False
+    else:
+        return True
 def get_uinfo(db, uid):
     c = db.cursor()
     c.execute('select name, motto, hold from user where id = ?', (uid,))
@@ -26,19 +62,48 @@ def get_pow_user_fence(db, uid, pid):
         return False
     proof, note, timestamp = row
     return decode(proof), decode(note), timestamp
-
+def dump_todo_user_progress(db, uid):
+    c = db.cursor()
+    c.execute('select todo.id, todo_t.name, todo.name from todo join todo_t where todo.tid = todo_t.id and is_finished = 0 and uid = ?', (uid,))
+    return [[id, tname, decode(name)] for id, tname, name in c.fetchall()]
+def dump_todo_user_finished(db, uid):
+    c = db.cursor()
+    c.execute('select todo.id, todo_t.name, todo.name from todo join todo_t where todo.tid = todo_t.id and is_finished <> 0 and uid = ?', (uid,))
+    return [[id, tname, decode(name)] for id, tname, name in c.fetchall()]
 def dump_pow_user_fence(db, uid):
     c = db.cursor()
-    c.execute('select id, proof, timestamp from pow where uid = ? or is_public = 1', (uid,))
+    c.execute('select id, proof, timestamp from pow where uid = ?', (uid,))
+    return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
+def dump_pow_me_fence(db, uid):
+    c = db.cursor()
+    c.execute('select id, proof, timestamp from pow where uid = ?', (uid,))
+    return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
+def dump_pow_todo_fence(db, todoid):
+    c = db.cursor()
+    c.execute('select id, proof, timestamp from pow where is_public <> 0 and todoid = ?', (todoid,))
     return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
 def dump_user(db):
     c = db.cursor()
     c.execute('select name, motto from user where name is not null')
     return [[decode(name), motto] for name, motto in c.fetchall()]
+
 def dump_user_visible(db):
     c = db.cursor()
     c.execute('select name, motto from user where name is not null and visible = 1')
     return [[decode(name), decode(motto)] for name, motto in c.fetchall()]
+def get_user_visible(db, uid):
+    c = db.cursor()
+    c.execute('select name, motto from user where id = ? and visible = 1', (uid,))
+    u = c.fetchone()
+    if None ==  u:
+        return False
+
+    return decode(u[0]), decode(u[1])
+
+def dump_user_visible_hub(db):
+    c = db.cursor()
+    c.execute('select id, name from user where name is not null and visible = 1')
+    return [[id, decode(name)] for id, name in c.fetchall()]
 def get_type(db):
     c = db.cursor()
     c.execute('select id, name from todo_t')

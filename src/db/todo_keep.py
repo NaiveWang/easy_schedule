@@ -62,12 +62,12 @@ def proof(db, uid, todoid, note, visible):
     if val_span + 1 == span and val_repeat + 1 == repeat:
         # daily finished
         c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))', (
-                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with %lf credits.'%(val_span+1, span, val_repeat+1, repeat, rate)), visible
+                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with %lf credit(s).'%(val_span+1, span, val_repeat+1, repeat, rate)), visible
                 ))
     else:
         # half way done
         c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))', (
-                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with no credits.'%(val_span+1, span, val_repeat+1, repeat)), visible
+                uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with no credit.'%(val_span+1, span, val_repeat+1, repeat)), visible
                 ))
     db.commit()
     return True

@@ -76,3 +76,15 @@ def proof_todo_keep_post():
             return redirect('/todo_keep')
     flash('Encountering user fence violation, force log out')
     return redirect('/logout')
+@todo_keep.route('/peek_todo_keep', methods = ['GET'])
+def peek_todo_keep_get():
+    if session.get('login'):
+        db = dbd.connect()
+        # check user permission by todo (base info)
+        return render_template('peek_todo_keep.html',
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
+                                version = version,
+                                powdump = dbd.dump_pow_todo_fence(db, request.args['id']))
+    else:
+        flash(sess_rej)
+        return redirect('/login')

@@ -67,3 +67,15 @@ def new_todo_book_post():
     else:
         flash(sess_rej)
         return redirect('/login')
+@todo_book.route('/peek_todo_book', methods = ['GET'])
+def peek_todo_book_get():
+    if session.get('login'):
+        db = dbd.connect()
+        # check user permission by todo (base info)
+        return render_template('peek_todo_book.html',
+                                uinfo = dbd.get_uinfo(db, session.get('uid')),
+                                version = version,
+                                powdump = dbd.dump_pow_todo_fence(db, request.args['id']))
+    else:
+        flash(sess_rej)
+        return redirect('/login')

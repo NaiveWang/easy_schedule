@@ -6,6 +6,7 @@ from src.manage import manage
 from src.user import user
 from src.friend import friend
 from src.credit import credit
+from src.hub import hub
 
 from src.todo_book import todo_book
 from src.todo_keep import todo_keep, keep_daily_refresh
@@ -23,6 +24,7 @@ app.register_blueprint(manage)
 app.register_blueprint(user)
 app.register_blueprint(friend)
 app.register_blueprint(credit)
+app.register_blueprint(hub)
 
 app.register_blueprint(todo_book)
 app.register_blueprint(todo_keep)

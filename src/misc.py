@@ -24,36 +24,7 @@ def help_get():
                             version = version,
                             readme = readme)
 
-@misc.route('/hub', methods = ['GET'])
-def hub_get():
-    if session.get('login'):
-        db = dbd.connect()
-        return render_template('hub.html',
-                                uinfo = dbd.get_uinfo(db, session.get('uid')),
-                                version = version,
-                                powdump = dbd.dump_pow_user_fence(db, session.get('uid')),
-                                userdump = dbd.dump_user_visible(db))
-    else:
-        flash(sess_rej)
-        return redirect('/login')
 
-@misc.route('/peek_proof', methods = ['GET'])
-def peek_proof_get():
-    if session.get('login'):
-        db = dbd.connect()
-        # check user premission
-        # get the content
-        proof = dbd.get_pow_user_fence(db, session.get('uid'), request.args['id'])
-        if not proof:
-            flash('Permission Denied / No Proof Found')
-            return redirect('/hub')
-        return render_template('peek_proof.html',
-                                uinfo = dbd.get_uinfo(db, session.get('uid')),
-                                version = version,
-                                proof = proof)
-    else:
-        flash(sess_rej)
-        return redirect('/login')
 @misc.route('/new_todo', methods = ['GET'])
 def new_todo_get():
     if session.get('login'):
