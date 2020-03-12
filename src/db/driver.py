@@ -18,7 +18,8 @@ def check_upermission_user(db, uid, userid):
     is_friend = c.fetchone()[0]
     c.execute('select count(*) from user where visible <> 0 and id = ?', (userid,))
     is_visible = c.fetchone()[0]
-    if 0 == is_friend and uid != userid and 0 == is_visible:
+    if 0 == is_friend and int(uid) != int(userid) and 0 == is_visible:
+        print('false')
         return False
     else:
         return True
