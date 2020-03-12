@@ -58,6 +58,12 @@ To logout and leave the page
 
 ### HELP
 
+## User Permission
+
+User could have friends and set ones private or public.
+
+For a public user, ones all todos and all non-private proofs are accessible in public, which means avalible for all users. On the other hand, all user information is not allowed to browse if and only if this user set ones state to private, in this scenario same information accessable in public is only avaliable for user itself and ones friends.
+
 This is where you are now.
 
 ## [Credit System](/)
