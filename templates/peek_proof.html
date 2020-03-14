@@ -4,9 +4,26 @@
 {% endblock %}
 {% block content %}
 <h1>Proof</h1>
+
 {{proof[0]}}
+
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][0:6]}};"></div>
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][6:12]}};"></div>
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][12:18]}};"></div>
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][18:24]}};"></div>
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][24:30]}};"></div>
+
+  <div style=" width: 97px; height: 10px; background-color: #{{proof[3][30:32] * 3}};"></div>
 <h1>Note</h1>
 {{proof[1]}}
+
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][0:6]}};"></div>
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][6:12]}};"></div>
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][12:18]}};"></div>
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][18:24]}};"></div>
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][24:30]}};"></div>
+
+<div style=" width: 97px; height: 10px; background-color: #{{proof[4][30:32] * 3}};"></div>
 <h1>Timestamp</h1>
 {{proof[2]}}
 {% endblock %}

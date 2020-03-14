@@ -1,2 +1,2 @@
 sess_rej = 'User session expired, please login.'
-version = 'v0.10.2'
+version = 'v0.11.1'

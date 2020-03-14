@@ -8,7 +8,7 @@ from cryptography.fernet import Fernet
 def hash(s):
     return hashlib.md5(s.encode()).hexdigest()
 def hash1(s):
-    return hashlib.sha256(s.encode()).hexdigest()[:32]
+    return hashlib.sha256(s.encode()).hexdigest()
 
 def sencrypt(s, k):
     f = Fernet(hash1(k))

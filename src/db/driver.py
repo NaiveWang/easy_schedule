@@ -1,5 +1,5 @@
 import sqlite3
-from src.db.misc.security import encode, decode
+from src.db.misc.security import encode, decode, hash
 # this file is a database driver
 
 # connect database
@@ -66,7 +66,7 @@ def get_pow(db, pid):
 
         return False
     proof, note, timestamp = row
-    return decode(proof), decode(note), timestamp
+    return decode(proof), decode(note), timestamp, hash(proof), hash(note)
 
 def get_todo_with_type(db, todoid):
     c = db.cursor()
