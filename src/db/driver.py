@@ -66,8 +66,13 @@ def get_pow(db, pid):
 
         return False
     proof, note, timestamp = row
-    return decode(proof), decode(note), timestamp, hash(proof), hash(note)
 
+    c.execute('select base64 from pow_img where id = ?', (pid,))
+    img = c.fetchone()
+    if None == img:
+        return decode(proof), decode(note), timestamp, hash(proof), hash(note), None
+    else:
+        return decode(proof), decode(note), timestamp, hash(proof), hash(note), img[0]
 def get_todo_with_type(db, todoid):
     c = db.cursor()
     c.execute('select todo.name, todo_t.name from todo join todo_t where todo_t.id = todo.tid and todo.id = ?', (todoid,))

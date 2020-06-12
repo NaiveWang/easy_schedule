@@ -15,7 +15,7 @@ def create(db, uid, iid,  name, page_start, page_end, after, rate=1):
     # create a todo book
     add_todo(db, todoid, page_start, page_end)
     db.commit()
-def proof(db, val, uid, todoid, note, visible):
+def proof(db, val, uid, todoid, note, visible, img = None):
     # check if valid
     c = db.cursor()
     c.execute('select val, end, rate, name from todo_book join todo where iid = ? and todo.id = todo_book.id and todo_book.id = ?',(uid, todoid))
@@ -41,6 +41,8 @@ def proof(db, val, uid, todoid, note, visible):
     name = decode(c.fetchone()[0])
     c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))',
         (uid, todoid, encode(note), encode('Book Proof by '+name+': '+decode(row[3])+' from %d to %d with %lf credit'%(row[0], val, row[2] * (val - row[0]))), visible))
+    if img is not None:
+        c.execute('insert into pow_img(id, base64) values(?, ?)', (c.lastrowid, encode(img)))
     db.commit()
 
 def get_by_uid_todo(db, uid):

@@ -5,6 +5,8 @@ from src.conf import sess_rej, version
 
 import src.db.todo_keep as todo
 
+from src.db.misc.image import img2bytes
+
 todo_keep = Blueprint('todo_keep', __name__)
 
 
@@ -70,7 +72,18 @@ def proof_todo_keep_post():
         db = dbd.connect()
         if dbd.check_own_by_id(db, request.form['id'], session.get('uid')):
             # proof
-            if not todo.proof(db, session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v'])):
+            valid = False
+            if request.files['img'].read() == b'':
+                valid = todo.proof(db, session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']))
+            else:
+                # check image
+                img_valid, img_b = img2bytes(request.files['img'])
+                if img_valid:
+                    valid = todo.proof(db, session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']), img_b)
+                else:
+                    flash('Unsupported Image.')
+
+            if not valid:
                 # return to dashboard
                 flash('Time violation or unnecessary repeat.')
             return redirect('/todo_keep')

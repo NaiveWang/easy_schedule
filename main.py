@@ -30,6 +30,8 @@ app.register_blueprint(todo_book)
 app.register_blueprint(todo_keep)
 app.register_blueprint(todo_sport)
 
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 app.secret_key = os.urandom(12)
 Misaka(app)
 
@@ -39,7 +41,9 @@ Misaka(app)
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
+@app.errorhandler(413)
+def error413(e):
+    return "Buffer Protection", 413
 if __name__ == "__main__":
     import scheduler
     app.run(host='0.0.0.0', port=5000, debug=True)

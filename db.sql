@@ -81,7 +81,11 @@ CREATE TABLE IF NOT EXISTS "todo_sport" (
 	"val"	REAL DEFAULT 0,
 	"goal" REAL
 );
-
+CREATE TABLE IF NOT EXISTS "pow_img" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"base64"	BLOB NOT NULL,
+	PRIMARY KEY("id")
+)
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('todo_t',0);
 INSERT INTO sqlite_sequence VALUES('credit',0);
