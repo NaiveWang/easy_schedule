@@ -159,7 +159,7 @@ def credit_get_avaliable(db, uid, hold):
     return [[id, decode(name), price] for id, name, price in c.fetchall()]
 def credit_get_inprogress(db, uid, hold):
     c = db.cursor()
-    c.execute('select name, price, ? from credit where dependency = -1 and ? < price and uid = ?', (hold, hold, uid))
+    c.execute('select name, price, ? from credit where dependency = -1 and is_spent = 0 and ? < price and uid = ?', (hold, hold, uid))
     return [[decode(name), price, u] for name, price, u in c.fetchall()]
 def credit_spend(db, uid, cid):
     c = db.cursor()
