@@ -5,6 +5,8 @@ from src.conf import sess_rej, version
 
 import src.db.todo_book as todo
 
+from src.db.misc.image import img2bytes
+
 todo_book = Blueprint('todo_book', __name__)
 
 @todo_book.route('/todo_book', methods = ['GET'])
@@ -41,12 +43,23 @@ def proof_todo_book_post():
     if session.get('login'):
         # check user volation
         db = dbd.connect()
+        print(request.files['img'])
         if dbd.check_own_by_id(db, request.form['id'], session.get('uid')):
             # proof
-            todo.proof(db, int(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']))
+            # image check
+            if request.files['img'].read() == b'':
+                todo.proof(db, int(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']))
+            else:
+                # check image
+                img_valid, img_b = img2bytes(request.files['img'])
+                if img_valid:
+                    todo.proof(db, int(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']), img_b)
+                else:
+                    flash('Unsupported Image.')
+
             # return to dashboard
             return redirect('/todo_book')
-    flash('Encountering user fence violation, force log out')
+    flash('Encountering user fence violation, force log out.')
     return redirect('/logout')
 
 # request handlers

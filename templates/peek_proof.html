@@ -15,8 +15,9 @@
 
   <div style=" width: 97px; height: 10px; background-color: #{{proof[3][30:32] * 3}};"></div>
 <h1>Note</h1>
-{{proof[1]}}
-
+{% for line in proof[1].split('\n') %}
+{{line}}<br>
+{% endfor %}
 <div style=" width: 97px; height: 10px; background-color: #{{proof[4][0:6]}};"></div>
 <div style=" width: 97px; height: 10px; background-color: #{{proof[4][6:12]}};"></div>
 <div style=" width: 97px; height: 10px; background-color: #{{proof[4][12:18]}};"></div>
@@ -24,6 +25,12 @@
 <div style=" width: 97px; height: 10px; background-color: #{{proof[4][24:30]}};"></div>
 
 <div style=" width: 97px; height: 10px; background-color: #{{proof[4][30:32] * 3}};"></div>
+
+
+{% if None != proof[5] %}
+<h1>Image Proof</h1>
+<img src="data:image/*;base64, {{ proof[5] }}"/>
+{% endif %}
 <h1>Timestamp</h1>
 {{proof[2]}}
 {% endblock %}

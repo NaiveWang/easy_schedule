@@ -20,7 +20,7 @@ def create(db, uid, iid, name, after, rate, open, close, span, repeat, is_loop):
     add_todo(db, todoid, open, close, span, repeat, is_loop)
     db.commit()
 
-def proof(db, uid, todoid, note, visible):
+def proof(db, uid, todoid, note, visible, img = None):
     c = db.cursor()
     # validate instructor and non-finished
     c.execute('select span, val_span, repeat, val_repeat, open, close, rate, name, is_loop from todo_keep join todo where iid = ? and val_span <> span and val_repeat <> repeat and todo.id = todo_keep.id and todo_keep.id = ?',(uid, todoid))
@@ -69,6 +69,8 @@ def proof(db, uid, todoid, note, visible):
         c.execute('insert into pow(uid, todoid, note, proof, is_public, timestamp) values(?, ?, ?, ?, ?, datetime("now", "localtime"))', (
                 uid, todoid, encode(note), encode('Keep Proof by '+uname+': '+decode(name)+'day %d of %d, daily %d of %d with no credit.'%(val_span+1, span, val_repeat+1, repeat)), visible
                 ))
+    if img is not None:
+        c.execute('insert into pow_img(id, base64) values(?, ?)', (c.lastrowid, encode(img)))
     db.commit()
     return True
 

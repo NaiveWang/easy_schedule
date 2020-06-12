@@ -5,6 +5,8 @@ from src.conf import sess_rej, version
 
 import src.db.todo_sport as todo
 
+from src.db.misc.image import img2bytes
+
 todo_sport = Blueprint('todo_sport', __name__)
 
 @todo_sport.route('/todo_sport', methods = ['GET'])
@@ -41,7 +43,16 @@ def proof_todo_sport_post():
         db = dbd.connect()
         if dbd.check_own_by_id(db, request.form['id'], session.get('uid')):
             # proof
-            todo.proof(db, float(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']))
+            if request.files['img'].read() == b'':
+                todo.proof(db, float(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']))
+            else:
+                # check image
+                img_valid, img_b = img2bytes(request.files['img'])
+                if img_valid:
+                    todo.proof(db, float(request.form['val']), session.get('uid'), request.form['id'], request.form['proof'], int(request.form['v']), img_b)
+                else:
+                    flash('Unsupported Image.')
+
             # return to dashboard
             return redirect('/todo_sport')
     flash('Encountering user fence violation, force log out')

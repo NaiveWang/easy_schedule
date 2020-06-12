@@ -3,9 +3,11 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<form action="proof_todo_keep" method="POST">
+<form action="proof_todo_keep" method="POST" enctype="multipart/form-data">
   ID<br><input type="number" value="{{id}}" name="id" required="required" readonly><br>
-  Proof<br><input type="text" id="proof" name="proof" required="required" size="100"><br>
+  Proof<br><textarea id="proof" class="text" rows="5" cols="80" name="proof"></textarea><br>
+  <label for="img">Image Proof</label>
+  <input type="file" id="img" name="img" accept="image/*"><br>
   Totally Private?<br><select id="v", name="v">
     <option value="0">Da/Yes/吼啊</option>
     <option value="1" selected>Nyet/No/老子就不</option>

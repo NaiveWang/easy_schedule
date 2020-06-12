@@ -18,9 +18,13 @@ def sdecrypt(s, k):
     key = hash1(k)
     return f.decrypt(s.encode()).decode()
 
-def encode(s):
-    return base64.b64encode(s.encode()).decode()
-def decode(s):
+def encode(s):# bytes or string
+    try:
+        s = s.encode()
+    except (UnicodeDecodeError, AttributeError):
+        pass
+    return base64.b64encode(s).decode()
+def decode(s): # string
     return base64.b64decode(s.encode()).decode()
 def get_tok():
     return str(uuid.uuid1())
