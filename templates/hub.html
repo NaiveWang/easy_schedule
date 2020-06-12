@@ -3,7 +3,7 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<h1>My Proof-of-Work Dump</h1>
+<h1>My & My Friends' Proof-of-Work Dump</h1>
 {% for id, proof, timestamp in powdump %}
   <li>
       <a href="/peek_proof?id={{id}}">{{proof}} {{timestamp}}</a>

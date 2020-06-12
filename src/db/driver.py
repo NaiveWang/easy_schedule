@@ -1,5 +1,5 @@
 import sqlite3
-from src.db.misc.security import encode, decode
+from src.db.misc.security import encode, decode, hash
 # this file is a database driver
 
 # connect database
@@ -66,7 +66,7 @@ def get_pow(db, pid):
 
         return False
     proof, note, timestamp = row
-    return decode(proof), decode(note), timestamp
+    return decode(proof), decode(note), timestamp, hash(proof), hash(note)
 
 def get_todo_with_type(db, todoid):
     c = db.cursor()
@@ -89,7 +89,8 @@ def dump_pow_user_fence(db, uid):
     return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
 def dump_pow_me_fence(db, uid):
     c = db.cursor()
-    c.execute('select id, proof, timestamp from pow where uid = ?', (uid,))
+    # by default only fetch first 30
+    c.execute('select distinct(pow.id), proof, timestamp from pow join user_bond where (pow.uid = ?) or (pow.uid = user_bond.iid and user_bond.uid = ? and is_public <> 0) order by pow.id desc limit 30', (uid, uid))
     return [[id, decode(proof), timestamp] for id, proof, timestamp in c.fetchall()]
 def dump_pow_todo_fence(db, todoid):
     c = db.cursor()
