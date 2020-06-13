@@ -217,7 +217,9 @@ def set_trash_todo(db, id, uid, val):
 def delete_pow(db, id, uid):
     c = db.cursor()
     c.execute('delete from pow where trash <> 0 and uid = ? and id = ?', (uid, id))
-    db.commit()
+    if 0 != c.rowcount:
+        c.execute('delete from pow_img where id = ?', (id,))
+        db.commit()
 def delete_credit(db, id, uid):
     c = db.cursor()
     # proof id and trash
@@ -237,7 +239,16 @@ def delete_todo(db, id, uid):
     if None != is_trash and 0 != is_trash[0]:
         # pull dependency
         c.execute('update todo set dependency = ? where dependency = ?', (is_trash[1], id))
-        # delete down stream
+        # delete all pow belongs to this todo
+        ## collect
+        c.execute('select id from pow where todoid = ?', (id,))
+        collector = c.fetchall()
+        ## delete pow_img dependency
+        for each in collector:
+            c.execute('delete from pow_img where id = ?', (each[0],))
+        ## delete pow dependency
+        c.execute('delete from pow where todoid = ?', (id,))
+        # delete down stream dependency
         c.execute('delete from todo_%s where id = ?'%(is_trash[2]), (id,))
         # delete
         c.execute('delete from todo where id = ?', (id,))
