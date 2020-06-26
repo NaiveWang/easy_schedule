@@ -1,9 +1,104 @@
 {% extends 'base.html' %}
 {% block title %}My Profile{% endblock %}
 {% block header %}
+<style>
+  canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+</style>
+<script>
 
+var x = 800;
+var y = 600;
+
+var hface = new Image();
+hface.src = "https://raw.githubusercontent.com/NaiveWang/Just_for_Fun/dev/Others/douban_spider/static/Veryhappy.jpg";
+var aface = new Image();
+aface.src = "https://raw.githubusercontent.com/NaiveWang/Just_for_Fun/dev/Others/douban_spider/static/Angry.jpg";
+var mface = new Image();
+mface.src = "https://raw.githubusercontent.com/NaiveWang/Just_for_Fun/dev/Others/douban_spider/static/Disappointed.jpg"
+
+  function startGame() {
+      pads = [];
+      for (i = 0; i < 250; i++) {
+        pads.push(new draw_pad(Math.random() * 800, Math.random() * 600));
+      }
+      area.start();
+  }
+
+  var area = {
+      canvas : document.createElement("canvas"),
+      start : function() {
+          this.canvas.width = x;
+          this.canvas.height = y;
+          this.context = this.canvas.getContext("2d");
+          document.body.insertBefore(this.canvas, document.body.childNodes[1]);
+          this.interval = setInterval(update_pad, 20);
+      },
+      clear : function() {
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+  }
+
+  function draw_pad(x, y) {
+
+      this.x = x;
+      this.y = y;
+      this.dir = 0;
+      this.v = .1;
+      this.update = function(){
+          ctx = area.context;
+          if (10 < this.v) {
+            ctx.drawImage(aface, this.x, this.y);
+            ctx.fillText("Buh!.", this.x + 3, this.y);
+          } else if (1 > this.v) {
+            ctx.drawImage(mface, this.x, this.y);
+            ctx.fillText("Meh.", this.x + 3, this.y);
+          } else {
+            ctx.drawImage(hface, this.x, this.y);
+            ctx.fillText("xaxa", this.x + 3, this.y);
+          }
+
+      }
+  }
+
+  function update_pad() {
+      area.clear();
+      for (i = 0; i < pads.length; i++) {
+        pad = pads[i];
+        if (760 < pad.x) {
+          pad.dir = 1;
+          pad.v = .3;
+        }
+        else if (40 > pad.x) {
+          pad.dir = 0;
+          pad.v = .3;
+        }
+        if (0 == pad.dir) pad.x += pad.v;
+        else pad.x -= pad.v;
+
+        if (560 < pad.y) {
+          pad.y--;
+        } else if (40 > pad.y) {
+          pad.y++;
+        } else {
+          pad.y += 4 * Math.random() - 2;
+        }
+
+        pad.v += Math.random() - .4;
+        pad.update();
+      }
+
+  }
+</script>
 {% endblock %}
 {% block content %}
+<body onload="startGame()">
 <h2>Change wassup</h2>
 <form action="/me_wassup" method="POST">
   <input type="input" name="motto" placeholder="Say something!" required>
